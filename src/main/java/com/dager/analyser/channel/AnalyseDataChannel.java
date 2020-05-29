@@ -1,6 +1,6 @@
 package com.dager.analyser.channel;
 
-import com.tencent.musician.platform.service.analyse.easyanalyse.common.AnalyseDataCommon;
+import com.dager.analyser.common.AnalyseDataCommon;
 import lombok.Data;
 
 /**
