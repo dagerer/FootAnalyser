@@ -1,6 +1,6 @@
-package com.dager.analyser.loader;
+package com.dager.analyser.producer.loader;
 
-import com.dager.analyser.base.PageDTO;
+import com.dager.analyser.producer.base.PageDTO;
 
 /**
  * @author G. Seinfeld

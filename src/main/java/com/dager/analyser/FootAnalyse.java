@@ -1,18 +1,18 @@
 package com.dager.analyser;
 
-import com.dager.analyser.base.PageRequest;
-import com.dager.analyser.handler.AnalyseDataHandler;
+import com.dager.analyser.producer.base.PageRequest;
+import com.dager.analyser.producer.handler.AnalyseDataHandler;
 
 /**
  * FootAnalyse {@link AnalyseBuilder}
  * 具体使用模板:
  * <p>
- *     <blockquote><pre>
+ * <blockquote><pre>
  *     QueryRequest request = new QueryRequest();
  *     request.setSome();
  *     RuleCompareDTO ruleDTO =
  *                 RuleCompareDTO.builder().someField.build();
- *     FootAnalyse&lt;QueryRequest, Object> analyser = new AnalyseBuilder()&lt;>.
+ *     FootAnalyse&lt;Object> analyser = FootAnalyse.&lt;Object>builder().
  *            .setRequest(request, dataSourceService::queryDataByPage)
  *            .setThread(5, 10, 10)
  *            .setRuleAndParam(ruleDTO,...rules)
@@ -20,14 +20,12 @@ import com.dager.analyser.handler.AnalyseDataHandler;
  *             .build();
  *     analyser.analyse();
  *  </pre></blockquote>
- *  </p>
+ * </p>
  *
- * @param <R> 分页信息类型（每次处理的条数以及当前页数）
- * @param <T> 数据类型
  * @author dager
  * @author G. Seinfeld
  */
-public class FootAnalyse<R extends PageRequest, T> {
+public class FootAnalyse<T> {
 
     private final AnalyseDataHandler<T> handler;
 
@@ -35,8 +33,17 @@ public class FootAnalyse<R extends PageRequest, T> {
         this.handler = handler;
     }
 
-    public void analyse(){
+    public void analyse() {
         handler.handle();
+    }
+
+    /**
+     * @param <R> 分页信息类型（每次处理的条数以及当前页数）
+     * @param <T> 数据类型
+     * @return
+     */
+    public static <R extends PageRequest, T> AnalyseBuilder<R, T> builder() {
+        return new AnalyseBuilder<>();
     }
 
 }

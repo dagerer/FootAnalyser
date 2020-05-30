@@ -1,4 +1,4 @@
-package com.dager.analyser.common.dto;
+package com.dager.analyser.context.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

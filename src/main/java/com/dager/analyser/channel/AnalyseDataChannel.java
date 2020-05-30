@@ -1,6 +1,5 @@
 package com.dager.analyser.channel;
 
-import com.dager.analyser.common.AnalyseDataCommon;
 import lombok.Data;
 
 /**
@@ -13,7 +12,6 @@ public class AnalyseDataChannel<T> {
 
     private AnalyseBlockingQueue<T> blockingQueue;
 
-    private AnalyseDataCommon<T> common;
 
     public AnalyseDataChannel() {
 

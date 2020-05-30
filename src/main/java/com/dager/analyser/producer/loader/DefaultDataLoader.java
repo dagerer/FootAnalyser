@@ -1,7 +1,7 @@
-package com.dager.analyser.loader;
+package com.dager.analyser.producer.loader;
 
-import com.dager.analyser.base.PageDTO;
-import com.dager.analyser.base.PageRequest;
+import com.dager.analyser.producer.base.PageDTO;
+import com.dager.analyser.producer.base.PageRequest;
 import lombok.Data;
 
 import java.util.function.Function;

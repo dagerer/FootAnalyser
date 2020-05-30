@@ -1,4 +1,4 @@
-package com.dager.analyser.analyser;
+package com.dager.analyser.consumer.analyser;
 
 
 import com.dager.analyser.context.AnalyseContext;

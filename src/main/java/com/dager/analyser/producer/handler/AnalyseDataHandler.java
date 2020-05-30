@@ -1,4 +1,4 @@
-package com.dager.analyser.handler;
+package com.dager.analyser.producer.handler;
 
 import java.util.List;
 

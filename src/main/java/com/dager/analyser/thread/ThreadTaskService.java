@@ -1,7 +1,7 @@
 package com.dager.analyser.thread;
 
 
-import com.dager.analyser.common.dto.ThreadTaskDTO;
+import com.dager.analyser.context.dto.ThreadTaskDTO;
 
 import java.util.concurrent.ThreadPoolExecutor;
 

@@ -1,8 +1,8 @@
 package com.dager.analyser.channel;
 
 import com.alibaba.fastjson.JSON;
-import com.dager.analyser.common.AnalyseDataCommon;
-import com.dager.analyser.common.dto.AnalyseQueueDTO;
+import com.dager.analyser.context.AnalyseContext;
+import com.dager.analyser.context.dto.AnalyseQueueDTO;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.Semaphore;
@@ -16,21 +16,21 @@ public class AnalyseBlockingQueueTask<T> {
 
     private final AnalyseBlockingQueue<T> blockingQueue;
 
-    private final AnalyseDataCommon<T> common;
+    private final AnalyseContext<T> context;
 
     private final Semaphore semaphore;
 
-    public AnalyseBlockingQueueTask(AnalyseDataCommon<T> common,
+    public AnalyseBlockingQueueTask(AnalyseContext<T> context,
                                     AnalyseBlockingQueue<T> blockingQueue) {
-        this.common = common;
+        this.context = context;
         this.blockingQueue = blockingQueue;
-        semaphore = new Semaphore(common.getContext().getMaxAvailableNum());
+        semaphore = new Semaphore(context.getMaxAvailableNum());
         this.init();
     }
 
     public void init() {
         //获取队列
-        common.getTaskService().getThreadPool().submit(this::consume);
+        context.getTaskService().getThreadPool().submit(this::consume);
         log.info("AnalyseBlockingQueueTask init poll end!");
     }
 
@@ -43,10 +43,10 @@ public class AnalyseBlockingQueueTask<T> {
                     Thread.sleep(100L);
                     log.info("AnalyseBlockingQueueTask The bean is : {} ", JSON.toJSONString(bean));
                     AnalyseQueueDTO<T> finalBean = bean;
-                    common.getTaskService().getThreadPool().submit(() -> {
+                    context.getTaskService().getThreadPool().submit(() -> {
                         T data = finalBean.getData();
-                        Object result = common.getAnalyser().analyse(common.getContext(), data);
-                        common.getAnalyser().afterAnalyse(data, result);
+                        Object result = context.getAnalyser().analyse(context, data);
+                        context.getAnalyser().afterAnalyse(data, result);
                     });
                 }else{
                     log.info("no permit do retry, bean:" + JSON.toJSONString(bean) + "Thread:" + Thread.currentThread().getName());

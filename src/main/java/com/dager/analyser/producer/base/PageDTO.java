@@ -1,4 +1,4 @@
-package com.dager.analyser.base;
+package com.dager.analyser.producer.base;
 
 
 import lombok.Getter;

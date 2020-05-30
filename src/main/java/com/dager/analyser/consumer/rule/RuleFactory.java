@@ -1,8 +1,8 @@
-package com.dager.analyser.rule;
+package com.dager.analyser.consumer.rule;
 
 
-import com.dager.analyser.common.constant.RuleConstants;
-import com.dager.analyser.common.dto.RuleBaseCompareDTO;
+import com.dager.analyser.context.constant.RuleConstants;
+import com.dager.analyser.context.dto.RuleBaseCompareDTO;
 import com.dager.analyser.context.RuleContext;
 import com.google.common.base.Preconditions;
 import lombok.Getter;

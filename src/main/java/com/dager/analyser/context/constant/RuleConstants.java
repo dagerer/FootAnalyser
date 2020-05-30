@@ -1,4 +1,4 @@
-package com.dager.analyser.common.constant;
+package com.dager.analyser.context.constant;
 
 public class RuleConstants {
 
