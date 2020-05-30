@@ -1,6 +1,7 @@
 package com.dager.analyser.handler;
 
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.dager.analyser.base.PageDTO;
 import com.dager.analyser.base.PageRequest;
 import com.dager.analyser.channel.AnalyseBlockingQueue;
@@ -10,7 +11,6 @@ import com.dager.analyser.common.dto.AnalyseQueueDTO;
 import com.dager.analyser.common.dto.ThreadTaskDTO;
 import com.dager.analyser.context.AnalyseContext;
 import com.dager.analyser.reader.AnalyseDataReader;
-import com.vip.vjtools.vjkit.collection.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
