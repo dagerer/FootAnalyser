@@ -29,7 +29,7 @@ import java.util.function.Function;
  */
 public class AnalyseBuilder<R extends PageRequest, T> {
 
-    private final AnalyseDataHandler<R, T> handler;
+    private final AnalyseDataHandler<T> handler;
 
     private final AnalyseDataChannel<T> channel;
 
@@ -99,7 +99,8 @@ public class AnalyseBuilder<R extends PageRequest, T> {
         return this;
     }
 
-    public void doHandle() {
-        handler.fire();
+    public FootAnalyse<R, T> build(){
+        return new FootAnalyse<>(handler);
     }
+
 }

@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 @Slf4j
-public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements AnalyseDataHandler<R, T> {
+public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements AnalyseDataHandler<T> {
 
     private final AnalyseDataChannel<T> channel;
 
@@ -33,7 +33,7 @@ public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements Analyse
     }
 
     @Override
-    public void fire() {
+    public void handle() {
         long start = System.currentTimeMillis();
         AnalyseContext context = common.getContext();
         log.info("AnalyseDataHandlerImpl handleData request info:{}", context.getInformation());
