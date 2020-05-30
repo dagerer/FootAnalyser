@@ -13,7 +13,7 @@ import com.dager.analyser.common.dto.RuleBaseCompareDTO;
 import com.dager.analyser.context.AnalyseContext;
 import com.dager.analyser.handler.AnalyseDataHandler;
 import com.dager.analyser.handler.AnalyseDataHandlerImpl;
-import com.dager.analyser.reader.AnalyseDataReader;
+import com.dager.analyser.loader.DefaultDataLoader;
 import com.dager.analyser.rule.RuleFactory;
 import com.dager.analyser.thread.ThreadTaskService;
 import com.dager.analyser.thread.impl.ThreadTaskServiceImpl;
@@ -33,7 +33,7 @@ public class AnalyseBuilder<R extends PageRequest, T> {
 
     private final AnalyseDataChannel<T> channel;
 
-    private final AnalyseDataReader<R, T> reader;
+    private final DefaultDataLoader<R, T> reader;
 
     private final AnalyseContext context;
 
@@ -42,7 +42,7 @@ public class AnalyseBuilder<R extends PageRequest, T> {
     public AnalyseBuilder() {
         context = new AnalyseContext();
         common = new AnalyseDataCommon<>();
-        reader = new AnalyseDataReader<>();
+        reader = new DefaultDataLoader<>();
         channel = new AnalyseDataChannel<>();
         handler = new AnalyseDataHandlerImpl<>(this.channel, reader, common);
     }

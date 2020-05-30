@@ -10,7 +10,7 @@ import com.dager.analyser.common.AnalyseDataCommon;
 import com.dager.analyser.common.dto.AnalyseQueueDTO;
 import com.dager.analyser.common.dto.ThreadTaskDTO;
 import com.dager.analyser.context.AnalyseContext;
-import com.dager.analyser.reader.AnalyseDataReader;
+import com.dager.analyser.loader.DefaultDataLoader;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -20,12 +20,12 @@ public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements Analyse
 
     private final AnalyseDataChannel<T> channel;
 
-    private final AnalyseDataReader<R, T> reader;
+    private final DefaultDataLoader<R, T> reader;
 
     private final AnalyseDataCommon<T> common;
 
     public AnalyseDataHandlerImpl(AnalyseDataChannel<T> channel,
-                                  AnalyseDataReader<R, T> reader,
+                                  DefaultDataLoader<R, T> reader,
                                   AnalyseDataCommon<T> common) {
         this.channel = channel;
         this.reader = reader;

@@ -14,7 +14,17 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class AnalyseBlockingQueue<T> {
 
-    final BlockingQueue<AnalyseQueueDTO<T>> queue = new LinkedBlockingQueue<>(200000);
+    private static final int DEFAULT_CAPACITY = 200_000;
+
+    private final BlockingQueue<AnalyseQueueDTO<T>> queue;
+
+    public AnalyseBlockingQueue() {
+        this(DEFAULT_CAPACITY);
+    }
+
+    public AnalyseBlockingQueue(int capacity) {
+        queue = new LinkedBlockingQueue<>(capacity);
+    }
 
     public void offer(AnalyseQueueDTO<T> dto) {
         queue.offer(dto);
