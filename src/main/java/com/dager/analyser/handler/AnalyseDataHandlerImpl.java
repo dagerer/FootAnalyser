@@ -1,6 +1,7 @@
 package com.dager.analyser.handler;
 
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.dager.analyser.base.PageDTO;
 import com.dager.analyser.base.PageRequest;
 import com.dager.analyser.channel.AnalyseBlockingQueue;
@@ -9,23 +10,22 @@ import com.dager.analyser.common.AnalyseDataCommon;
 import com.dager.analyser.common.dto.AnalyseQueueDTO;
 import com.dager.analyser.common.dto.ThreadTaskDTO;
 import com.dager.analyser.context.AnalyseContext;
-import com.dager.analyser.reader.AnalyseDataReader;
-import com.vip.vjtools.vjkit.collection.CollectionUtil;
+import com.dager.analyser.loader.DefaultDataLoader;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 @Slf4j
-public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements AnalyseDataHandler<R, T> {
+public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements AnalyseDataHandler<T> {
 
     private final AnalyseDataChannel<T> channel;
 
-    private final AnalyseDataReader<R, T> reader;
+    private final DefaultDataLoader<R, T> reader;
 
     private final AnalyseDataCommon<T> common;
 
     public AnalyseDataHandlerImpl(AnalyseDataChannel<T> channel,
-                                  AnalyseDataReader<R, T> reader,
+                                  DefaultDataLoader<R, T> reader,
                                   AnalyseDataCommon<T> common) {
         this.channel = channel;
         this.reader = reader;
@@ -33,7 +33,7 @@ public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements Analyse
     }
 
     @Override
-    public void fire() {
+    public void handle() {
         long start = System.currentTimeMillis();
         AnalyseContext context = common.getContext();
         log.info("AnalyseDataHandlerImpl handleData request info:{}", context.getInformation());

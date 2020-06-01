@@ -5,9 +5,9 @@ import java.util.List;
 /**
  * @author dager
  */
-public interface AnalyseDataHandler<R, T> {
+public interface AnalyseDataHandler<T> {
 
-    void fire();
+    void handle();
 
     void pushInAnalyseQueue(List<T> data);
 

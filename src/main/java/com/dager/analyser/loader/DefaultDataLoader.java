@@ -1,4 +1,4 @@
-package com.dager.analyser.reader;
+package com.dager.analyser.loader;
 
 import com.dager.analyser.base.PageDTO;
 import com.dager.analyser.base.PageRequest;
@@ -10,17 +10,18 @@ import java.util.function.Function;
  * @author dager
  */
 @Data
-public class AnalyseDataReader<R extends PageRequest, T> {
+public class DefaultDataLoader<R extends PageRequest, T> implements DataLoader<T> {
 
 
     private R request;
 
     private Function<R , PageDTO<T>> service;
 
-    public AnalyseDataReader() {
+    public DefaultDataLoader() {
     }
 
 
+    @Override
     public PageDTO<T> load() {
         return loadData();
     }
