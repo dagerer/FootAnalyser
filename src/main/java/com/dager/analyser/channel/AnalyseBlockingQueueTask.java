@@ -1,7 +1,9 @@
 package com.dager.analyser.channel;
 
 import com.alibaba.fastjson.JSON;
+import com.dager.analyser.consumer.analyser.AnalyseDataAnalyser;
 import com.dager.analyser.context.AnalyseContext;
+import com.dager.analyser.context.Configuration;
 import com.dager.analyser.context.dto.AnalyseQueueDTO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +26,7 @@ public class AnalyseBlockingQueueTask<T> {
                                     AnalyseBlockingQueue<T> blockingQueue) {
         this.context = context;
         this.blockingQueue = blockingQueue;
-        semaphore = new Semaphore(context.getMaxAvailableNum());
+        semaphore = new Semaphore(new Configuration().getMaxAvailableNum());
         this.init();
     }
 
@@ -41,15 +43,18 @@ public class AnalyseBlockingQueueTask<T> {
                 bean = blockingQueue.poll(100L, TimeUnit.SECONDS);
                 if(semaphore.tryAcquire()){
                     Thread.sleep(100L);
-                    log.info("AnalyseBlockingQueueTask The bean is : {} ", JSON.toJSONString(bean));
+                    log.info("AnalyseBlockingQueueTask The bean is: {} ", JSON.toJSONString(bean));
                     AnalyseQueueDTO<T> finalBean = bean;
                     context.getTaskService().getThreadPool().submit(() -> {
                         T data = finalBean.getData();
-                        Object result = context.getAnalyser().analyse(context, data);
-                        context.getAnalyser().afterAnalyse(data, result);
+                        AnalyseDataAnalyser<T> analyser = context.getAnalyser();
+                        // 如果没开启规则引擎，则走重写分析数据
+                        Object result = analyser.analyse(context, data);
+                        analyser.afterAnalyse(data, result);
+                        // TODO 如果开启，走规则引擎逻辑
                     });
                 }else{
-                    log.info("no permit do retry, bean:" + JSON.toJSONString(bean) + "Thread:" + Thread.currentThread().getName());
+                    log.info("no permit and do retry, bean:{}, current Thread:{}",JSON.toJSONString(bean),Thread.currentThread().getName());
                     blockingQueue.offer(bean);
                 }
             } catch (Exception e) {

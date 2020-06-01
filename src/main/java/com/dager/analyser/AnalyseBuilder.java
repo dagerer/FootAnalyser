@@ -2,6 +2,10 @@ package com.dager.analyser;
 
 import com.alibaba.fastjson.JSON;
 import com.dager.analyser.consumer.analyser.AnalyseDataAnalyser;
+import com.dager.analyser.consumer.rule.RuleHandler;
+import com.dager.analyser.consumer.rule.RuleHandlerImpl;
+import com.dager.analyser.context.Configuration;
+import com.dager.analyser.context.dto.AnalyseInfoDTO;
 import com.dager.analyser.producer.base.PageDTO;
 import com.dager.analyser.producer.base.PageRequest;
 import com.dager.analyser.channel.AnalyseBlockingQueue;
@@ -54,7 +58,9 @@ class AnalyseBuilder<R extends PageRequest, T> {
         loader = new DefaultDataLoader<>();
         loader.setRequest(request);
         loader.setService(service);
-        context.setInformation(JSON.toJSONString(request));
+        AnalyseInfoDTO commonInfo = new AnalyseInfoDTO();
+        commonInfo.setInformation(JSON.toJSONString(request));
+        context.setCommonInfo(commonInfo);
         return this;
     }
 
@@ -67,8 +73,11 @@ class AnalyseBuilder<R extends PageRequest, T> {
      * @return
      */
     public AnalyseBuilder<R, T> setTaskInfo(int batchNum, int threadMaxNum,int maxAvailableNum, String threadName) {
-        context.setBatchNum(batchNum);
-        context.setMaxAvailableNum(maxAvailableNum);
+        Configuration config = new Configuration();
+        config.setBatchNum(batchNum);
+        config.setThreadNum(threadMaxNum);
+        config.setThreadNum(maxAvailableNum);
+        context.setConfig(config);
         ThreadTaskService service = new ThreadTaskServiceImpl(threadMaxNum,threadName);
         context.setTaskService(service);
         AnalyseBlockingQueue<T> queue = new AnalyseBlockingQueue<>();
@@ -79,10 +88,10 @@ class AnalyseBuilder<R extends PageRequest, T> {
     }
 
     public <V extends RuleBaseCompareDTO> AnalyseBuilder<R, T> setRuleAndParam(V compareDTO, Object... rules) {
-        RuleFactory ruleFactory = RuleFactory.createCommonRuleFactory();
-        ruleFactory.pushFact(RuleConstants.RULE_COMPARE_DTO, compareDTO);
-        ruleFactory.pushRules(rules);
-        context.setRuleFactory(ruleFactory);
+        RuleHandler ruleHandler = new RuleHandlerImpl();
+        ruleHandler.pushParam(RuleConstants.RULE_COMPARE_DTO, compareDTO);
+        ruleHandler.pushRules(rules);
+        context.setRuleHandler(ruleHandler);
         return this;
     }
 

@@ -8,7 +8,7 @@ import com.dager.analyser.context.AnalyseContext;
  */
 public interface AnalyseDataAnalyser<T> {
 
-    Object analyse(AnalyseContext context, T bean);
+    Object analyse(AnalyseContext<T> context, T bean);
 
     void afterAnalyse(T bean, Object result);
 
