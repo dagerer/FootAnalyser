@@ -12,7 +12,7 @@ import com.dager.analyser.common.constant.RuleConstants;
 import com.dager.analyser.common.dto.RuleBaseCompareDTO;
 import com.dager.analyser.context.AnalyseContext;
 import com.dager.analyser.handler.AnalyseDataHandler;
-import com.dager.analyser.handler.AnalyseDataHandlerImpl;
+import com.dager.analyser.handler.impl.AnalyseDataHandlerImpl;
 import com.dager.analyser.loader.DefaultDataLoader;
 import com.dager.analyser.rule.RuleFactory;
 import com.dager.analyser.thread.ThreadTaskService;
@@ -33,7 +33,7 @@ public class AnalyseBuilder<R extends PageRequest, T> {
 
     private final AnalyseDataChannel<T> channel;
 
-    private final DefaultDataLoader<R, T> reader;
+    private final DefaultDataLoader<R, T> loader;
 
     private final AnalyseContext context;
 
@@ -42,9 +42,9 @@ public class AnalyseBuilder<R extends PageRequest, T> {
     public AnalyseBuilder() {
         context = new AnalyseContext();
         common = new AnalyseDataCommon<>();
-        reader = new DefaultDataLoader<>();
+        loader = new DefaultDataLoader<>();
         channel = new AnalyseDataChannel<>();
-        handler = new AnalyseDataHandlerImpl<>(this.channel, reader, common);
+        handler = new AnalyseDataHandlerImpl<>(this.channel, loader, common);
     }
 
     /**
@@ -59,8 +59,8 @@ public class AnalyseBuilder<R extends PageRequest, T> {
      */
     public static <R extends PageRequest, T> AnalyseBuilder<R, T> setRequest(R request, Function<R, PageDTO<T>> service) {
         AnalyseBuilder<R, T> analyseBuilder = new AnalyseBuilder<>();
-        analyseBuilder.reader.setRequest(request);
-        analyseBuilder.reader.setService(service);
+        analyseBuilder.loader.setRequest(request);
+        analyseBuilder.loader.setService(service);
         analyseBuilder.context.setInformation(JSON.toJSONString(request));
         return analyseBuilder;
     }

@@ -1,4 +1,4 @@
-package com.dager.analyser.handler;
+package com.dager.analyser.handler.impl;
 
 
 import cn.hutool.core.collection.CollectionUtil;
@@ -10,6 +10,7 @@ import com.dager.analyser.common.AnalyseDataCommon;
 import com.dager.analyser.common.dto.AnalyseQueueDTO;
 import com.dager.analyser.common.dto.ThreadTaskDTO;
 import com.dager.analyser.context.AnalyseContext;
+import com.dager.analyser.handler.AnalyseDataHandler;
 import com.dager.analyser.loader.DefaultDataLoader;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,15 +21,15 @@ public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements Analyse
 
     private final AnalyseDataChannel<T> channel;
 
-    private final DefaultDataLoader<R, T> reader;
+    private final DefaultDataLoader<R, T> loader;
 
     private final AnalyseDataCommon<T> common;
 
     public AnalyseDataHandlerImpl(AnalyseDataChannel<T> channel,
-                                  DefaultDataLoader<R, T> reader,
+                                  DefaultDataLoader<R, T> loader,
                                   AnalyseDataCommon<T> common) {
         this.channel = channel;
-        this.reader = reader;
+        this.loader = loader;
         this.common = common;
     }
 
@@ -37,27 +38,26 @@ public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements Analyse
         long start = System.currentTimeMillis();
         AnalyseContext context = common.getContext();
         log.info("AnalyseDataHandlerImpl handleData request info:{}", context.getInformation());
-        PageDTO<T> page = reader.load();
+        PageDTO<T> page = loader.load();
         if (page == null || page.getTotalCount() == null || page.getTotalCount() == 0) {
             return;
         }
         pushInAnalyseQueue(page.getContent());
         int totalPage = page.getTotalPage();
-        log.info("com.dager.analyser.handler.AnalyseDataHandlerImpl handleData，总页数：{}，当前页：{}，处理到现在总耗时：{}",
+        log.info("AnalyseDataHandlerImpl handleData，总页数：{}，当前页：{}，处理到现在总耗时：{}",
                 page.getTotalPage(), page.getPageNo(), (System.currentTimeMillis() - start));
         if (totalPage > 1) {
             ThreadTaskDTO taskDTO = new ThreadTaskDTO();
             for (int i = 2; i <= totalPage; i++) {
-                reader.getRequest().setPageNo(i);
-                page = reader.load();
+                loader.getRequest().setPageNo(i);
+                page = loader.load();
                 taskDTO.setData(page.getContent());
                 taskDTO.setThreadNum(context.getBatchNum());
                 common.getTaskService().batchHandle(param -> {
-                    List<?> data = param.getData();
-                    pushInAnalyseQueue((List<T>) data);
+                    pushInAnalyseQueue((List<T>) param.getData());
                     return null;
                 }, taskDTO);
-                log.info("com.dager.analyser.handler.AnalyseDataHandlerImpl handleData，总页数：{}，当前页：{}，处理到现在总耗时：{}",
+                log.info("AnalyseDataHandlerImpl handleData，总页数：{}，当前页：{}，处理到现在总耗时：{}",
                         page.getTotalPage(), page.getPageNo(), (System.currentTimeMillis() - start));
             }
         }
