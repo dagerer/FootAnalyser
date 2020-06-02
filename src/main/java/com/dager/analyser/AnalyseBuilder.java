@@ -32,7 +32,6 @@ import java.util.function.Function;
  */
 class AnalyseBuilder<R extends PageRequest, T> {
 
-
     private final AnalyseDataChannel<T> channel;
 
     private DefaultDataLoader<R, T> loader;
@@ -52,7 +51,7 @@ class AnalyseBuilder<R extends PageRequest, T> {
      *
      * @param request 请求体
      * @param service 获取数据方法
-     * @return com.dager.analyser.AnalyseBuilder
+     * @return AnalyseBuilder
      */
     public AnalyseBuilder<R, T> setRequest(R request, Function<R, PageDTO<T>> service) {
         loader = new DefaultDataLoader<>();
@@ -87,15 +86,15 @@ class AnalyseBuilder<R extends PageRequest, T> {
         return this;
     }
 
-    public <V extends RuleBaseCompareDTO> AnalyseBuilder<R, T> setRuleAndParam(V compareDTO, Object... rules) {
+    public AnalyseBuilder<R, T> setRule(Object... rules) {
         RuleHandler ruleHandler = new RuleHandlerImpl();
-        ruleHandler.pushParam(RuleConstants.RULE_COMPARE_DTO, compareDTO);
         ruleHandler.pushRules(rules);
         context.setRuleHandler(ruleHandler);
         return this;
     }
 
-    public <M extends AnalyseDataAnalyser<T>> AnalyseBuilder<R, T> setAnalyseFunction(M analyser) {
+    public <M extends AnalyseDataAnalyser<T>> AnalyseBuilder<R, T> setAfterOperation(M analyser) {
+        context.getConfig().setOverride(true);
         context.setAnalyser(analyser);
         return this;
     }

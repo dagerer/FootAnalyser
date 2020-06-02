@@ -16,10 +16,17 @@ public class Configuration {
 
     private int maxAvailableNum;
 
+    private boolean isOverride;
+
     public Configuration(){
+        defaultInit();
+    }
+
+    private void defaultInit() {
         this.batchNum = 5;
         this.threadNum = 10;
         this.maxAvailableNum = 10;
+        this.isOverride = false;
     }
 
 }
