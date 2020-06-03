@@ -10,16 +10,14 @@ import com.dager.analyser.producer.handler.AnalyseDataHandler;
  * <blockquote><pre>
  *     QueryRequest request = new QueryRequest();
  *     request.setSome();
- *     RuleCompareDTO ruleDTO =
- *                 RuleCompareDTO.builder().someField.build();
- *     FootAnalyse&lt;Object> analyser = FootAnalyse.&lt;Object>builder().
+ *     FootAnalyse&lt;Object> foot = FootAnalyse.&lt;Object>builder().
  *            .setRequest(request, dataSourceService::queryDataByPage)
- *            .setThread(5, 10, 10)
- *            .setRuleAndParam(ruleDTO,...rules)
- *             .setAnalyseFunction(analyseTest)
- *             .build();
- *     analyser.analyse();
- *  </pre></blockquote>
+ *            .setConfig(...)
+ *            .setRule(...)
+ *            .setAfterOperation(...)
+ *            .build();
+ *     foot.analyse();
+ * </pre></blockquote>
  * </p>
  *
  * @author dager

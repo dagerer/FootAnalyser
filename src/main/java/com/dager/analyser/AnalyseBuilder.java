@@ -71,7 +71,7 @@ class AnalyseBuilder<R extends PageRequest, T> {
      * @param maxAvailableNum
      * @return
      */
-    public AnalyseBuilder<R, T> setTaskInfo(int batchNum, int threadMaxNum,int maxAvailableNum, String threadName) {
+    public AnalyseBuilder<R, T> setConfig(int batchNum, int threadMaxNum,int maxAvailableNum, String threadName) {
         Configuration config = new Configuration();
         config.setBatchNum(batchNum);
         config.setThreadNum(threadMaxNum);
