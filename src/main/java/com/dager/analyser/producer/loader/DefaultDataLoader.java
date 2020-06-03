@@ -27,7 +27,10 @@ public class DefaultDataLoader<R extends PageRequest, T> implements DataLoader<T
     }
 
     private PageDTO<T> loadData() {
-        return this.getService().apply(request);
+        if (service == null) {
+            return null;
+        }
+        return service.apply(request);
     }
 
 }

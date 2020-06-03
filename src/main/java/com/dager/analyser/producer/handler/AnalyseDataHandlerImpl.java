@@ -34,7 +34,10 @@ public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements Analyse
     @Override
     public void handle() {
         long start = System.currentTimeMillis();
-        log.info("AnalyseDataHandlerImpl handleData request info:{}", context.getInformation());
+        if (context.getCommonInfo() != null) {
+            String information = context.getCommonInfo().getInformation();
+            log.info("AnalyseDataHandlerImpl handleData request info:{}", information);
+        }
         PageDTO<T> page = reader.load();
         if (page == null || page.getTotalCount() == null || page.getTotalCount() == 0) {
             return;
@@ -49,7 +52,7 @@ public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements Analyse
                 reader.getRequest().setPageNo(i);
                 page = reader.load();
                 taskDTO.setData(page.getContent());
-                taskDTO.setThreadNum(context.getBatchNum());
+                taskDTO.setThreadNum(context.getConfig().getBatchNum());
                 context.getTaskService().batchHandle(param -> {
                     List<?> data = param.getData();
                     pushInAnalyseQueue((List<T>) data);

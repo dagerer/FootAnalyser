@@ -34,12 +34,13 @@ class AnalyseBuilder<R extends PageRequest, T> {
 
     private final AnalyseDataChannel<T> channel;
 
-    private DefaultDataLoader<R, T> loader;
+    private final DefaultDataLoader<R, T> loader;
 
     private final AnalyseContext<T> context;
 
 
     public AnalyseBuilder() {
+        loader = new DefaultDataLoader<>();
         context = new AnalyseContext<>();
         channel = new AnalyseDataChannel<>();
 
@@ -54,7 +55,6 @@ class AnalyseBuilder<R extends PageRequest, T> {
      * @return AnalyseBuilder
      */
     public AnalyseBuilder<R, T> setRequest(R request, Function<R, PageDTO<T>> service) {
-        loader = new DefaultDataLoader<>();
         loader.setRequest(request);
         loader.setService(service);
         AnalyseInfoDTO commonInfo = new AnalyseInfoDTO();
