@@ -34,8 +34,8 @@ public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements Analyse
     @Override
     public void handle() {
         long start = System.currentTimeMillis();
-        if (context.getCommonInfo() != null) {
-            String information = context.getCommonInfo().getInformation();
+        if (context.getMetadata() != null) {
+            String information = context.getMetadata().getInformation();
             log.info("AnalyseDataHandlerImpl handleData request info:{}", information);
         }
         PageDTO<T> page = reader.load();

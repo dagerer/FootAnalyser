@@ -1,11 +1,11 @@
 package com.dager.analyser.context;
 
 import com.dager.analyser.consumer.analyser.AnalyseDataAnalyser;
-import com.dager.analyser.consumer.rule.RuleFactory;
 import com.dager.analyser.consumer.rule.RuleHandler;
-import com.dager.analyser.context.dto.AnalyseInfoDTO;
 import com.dager.analyser.thread.ThreadTaskService;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @author dager
@@ -19,7 +19,24 @@ public class AnalyseContext<T> {
 
     private RuleHandler ruleHandler;
 
-    private AnalyseInfoDTO commonInfo;
+    private RequestMetadata metadata = new RequestMetadata();
 
     private Configuration config;
+
+    public void setInformation(String information) {
+        metadata.setInformation(information);
+    }
+
+    @Data
+    public static class RequestMetadata implements Serializable {
+
+        /**
+         * 请求信息
+         */
+        private String information;
+        /**
+         * 记录日期 yyyy-MM-dd
+         */
+        private String recordDate;
+    }
 }
