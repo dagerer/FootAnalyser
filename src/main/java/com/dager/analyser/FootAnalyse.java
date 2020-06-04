@@ -38,7 +38,7 @@ public class FootAnalyse<T> {
     /**
      * @param <R> 分页信息类型（每次处理的条数以及当前页数）
      * @param <T> 数据类型
-     * @return
+     * @return AnalyseBuilder
      */
     public static <R extends PageRequest, T> AnalyseBuilder<R, T> builder() {
         return new AnalyseBuilder<>();
