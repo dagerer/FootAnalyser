@@ -26,7 +26,7 @@ import java.util.function.Function;
  *
  * @author dager
  */
-class AnalyseBuilder<R extends PageRequest, T> {
+public class AnalyseBuilder<R extends PageRequest, T> {
 
     private final AnalyseDataChannel<T> channel;
 
@@ -54,7 +54,7 @@ class AnalyseBuilder<R extends PageRequest, T> {
      *
      * @param request 请求体
      */
-    public AnalyseBuilder<R, T> request(R request, Function<R, PageDTO<T>> service) {
+    public AnalyseBuilder<R, T> request(R request) {
         loader.setRequest(request);
         context.setInformation(JSON.toJSONString(request));
         return this;

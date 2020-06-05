@@ -12,11 +12,4 @@ public class AnalyseDataChannel<T> {
 
     private AnalyseBlockingQueue<T> blockingQueue;
 
-
-    public AnalyseDataChannel() {
-
-    }
-
-
-
 }

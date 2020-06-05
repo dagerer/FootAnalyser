@@ -3,7 +3,6 @@ package com.dager.analyser.consumer.analyser;
 
 import com.dager.analyser.consumer.rule.RuleHandler;
 import com.dager.analyser.context.constant.RuleConstants;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author dager

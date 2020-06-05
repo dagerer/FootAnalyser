@@ -19,15 +19,15 @@ public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements Analyse
 
     private final AnalyseDataChannel<T> channel;
 
-    private final DefaultDataLoader<R, T> reader;
+    private final DefaultDataLoader<R, T> loader;
 
     private final AnalyseContext<T> context;
 
     public AnalyseDataHandlerImpl(AnalyseDataChannel<T> channel,
-                                  DefaultDataLoader<R, T> reader,
+                                  DefaultDataLoader<R, T> loader,
                                   AnalyseContext<T> context) {
         this.channel = channel;
-        this.reader = reader;
+        this.loader = loader;
         this.context = context;
     }
 
@@ -38,7 +38,7 @@ public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements Analyse
             String information = context.getMetadata().getInformation();
             log.info("AnalyseDataHandlerImpl handleData request info:{}", information);
         }
-        PageDTO<T> page = reader.load();
+        PageDTO<T> page = loader.load();
         if (page == null || page.getTotalCount() == null || page.getTotalCount() == 0) {
             return;
         }
@@ -49,8 +49,8 @@ public class AnalyseDataHandlerImpl<R extends PageRequest, T> implements Analyse
         if (totalPage > 1) {
             ThreadTaskDTO taskDTO = new ThreadTaskDTO();
             for (int i = 2; i <= totalPage; i++) {
-                reader.getRequest().setPageNo(i);
-                page = reader.load();
+                loader.getRequest().setPageNo(i);
+                page = loader.load();
                 taskDTO.setData(page.getContent());
                 taskDTO.setThreadNum(context.getConfig().getBatchNum());
                 context.getTaskService().batchHandle(param -> {

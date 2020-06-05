@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author dager
  */
-@Slf4j
 public class AnalyseBlockingQueue<T> {
 
     private static final int DEFAULT_CAPACITY = 200_000;
@@ -32,9 +31,5 @@ public class AnalyseBlockingQueue<T> {
 
     AnalyseQueueDTO<T> poll(long timeout, TimeUnit unit) throws InterruptedException {
         return queue.poll(timeout, unit);
-    }
-
-    public int size() {
-        return queue.size();
     }
 }
