@@ -23,7 +23,7 @@ import com.dager.analyser.producer.handler.AnalyseDataHandler;
  * @author dager
  * @author G. Seinfeld
  */
-public class FootAnalyse<T> {
+public class FootAnalyse<R, T> {
 
     private final AnalyseDataHandler<T> handler;
 

@@ -69,7 +69,6 @@ public class AnalyseBuilder<R extends PageRequest, T> {
     }
 
 
-
     /**
      * 设置线程数和分批数
      *
@@ -110,7 +109,7 @@ public class AnalyseBuilder<R extends PageRequest, T> {
         return this;
     }
 
-    public FootAnalyse<T> build() {
+    public FootAnalyse<R, T> build() {
         final AnalyseDataHandler<T> handler = new AnalyseDataHandlerImpl<>(channel, loader, context);
         return new FootAnalyse<>(handler);
     }
