@@ -5,6 +5,7 @@ import com.dager.analyser.channel.AnalyseBlockingQueue;
 import com.dager.analyser.channel.AnalyseBlockingQueueTask;
 import com.dager.analyser.channel.AnalyseDataChannel;
 import com.dager.analyser.consumer.analyser.AnalyseDataAnalyser;
+import com.dager.analyser.consumer.analyser.AnalyseDataAnalyserListener;
 import com.dager.analyser.consumer.rule.RuleHandler;
 import com.dager.analyser.consumer.rule.RuleHandlerImpl;
 import com.dager.analyser.context.AnalyseContext;
@@ -102,12 +103,32 @@ public class AnalyseBuilder<R extends PageRequest, T> {
         return this;
     }
 
+    /**
+     * 默认对账模式，走规则引擎，可自定义监听器
+     *
+     * @param listener 监听器
+     * @param <M> 监听器类型
+     * @return
+     */
+    public <M extends AnalyseDataAnalyserListener<T>> AnalyseBuilder<R, T> listener(M listener) {
+        AnalyseDataAnalyser<T> dataAnalyser = new AnalyseDataAnalyser<>();
+        dataAnalyser.registerListener(listener);
+        context.setAnalyser(dataAnalyser);
+        return this;
+    }
 
+    /**
+     * 自定义处理数据模式（无法注册监听器）
+     *
+     * @param analyser 自定义分析类
+     * @param <M> 分析类类型
+     * @return
+     */
     public <M extends AnalyseDataAnalyser<T>> AnalyseBuilder<R, T> analyser(M analyser) {
-        context.getConfig().setOverride(true);
         context.setAnalyser(analyser);
         return this;
     }
+
 
     public FootAnalyse<R, T> build() {
         final AnalyseDataHandler<T> handler = new AnalyseDataHandlerImpl<>(channel, loader, context);
