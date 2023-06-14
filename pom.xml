@@ -17,7 +17,7 @@
         <rule.version>3.4.0</rule.version>
         <fastjson.version>1.2.67</fastjson.version>
         <hutool.version>5.3.5</hutool.version>
-        <guava.version>29.0-jre</guava.version>
+        <guava.version>32.0.0-jre</guava.version>
     </properties>
 
     <dependencies>
